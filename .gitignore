@@ -1,0 +1,11 @@
+#ignore all .class files
+*.class
+
+#ignore iml file
+#*.iml
+
+#ignore project config directory
+#*/.idea/
+
+#ignore .DS_Store
+.DS_Store
