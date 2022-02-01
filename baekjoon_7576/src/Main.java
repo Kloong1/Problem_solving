@@ -32,15 +32,14 @@ public class Main
                 if (warehouse[row][col] == 0)
                     unripeCnt++;
                 //익은 토마토면 bfs를 위해 queue에 넣어준다
-                //여기서 넣어준 tomatoesOfDayCnt 개의 토마토들이
-                //인접한 안 익은 토마토를 전부 익히면 둘째날이 된다.
                 else if (warehouse[row][col] == 1)
-                {
                     ripeTomatoQueue.add(new RipeTomato(row, col));
-                    tomatoesOfDayCnt++;
-                }
             }
         }
+
+        //위에서 queue에 넣어준 tomatoesOfDayCnt 개의 토마토들이
+        //인접한 안 익은 토마토를 전부 익히면 둘째날이 된다.
+        tomatoesOfDayCnt = ripeTomatoQueue.size();
 
         //정답 출력
         System.out.println(getRipeTime(ripeTomatoQueue, unripeCnt, tomatoesOfDayCnt));
