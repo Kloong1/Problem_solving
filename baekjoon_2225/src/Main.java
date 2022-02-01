@@ -29,9 +29,9 @@ public class Main
         for (int i = 0; i <= N; i++)
             dp[1][i][i] = 1;
 
-        //dp[i][j][k] => 숫자 i개를 더해서 k를 만드는데, 마지막에 더하는 숫자가 j일 때의 경우의 수
-        for (int i = 2; i <= K; i++)
-            fillKthDPArr(dp, i);
+        //dp[kth][i][j] => 숫자 kth개를 더해서 j를 만드는데, 마지막에 더하는 숫자가 i일 때의 경우의 수
+        for (int kth = 2; kth <= K; kth++)
+            fillKthDPArr(dp, kth);
     }
 
     static void fillKthDPArr(int[][][] dp, int Kth)
