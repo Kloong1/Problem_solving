@@ -1,3 +1,5 @@
+/* https://kloong.tistory.com/entry/백준-카드-정렬하기-1715-Java */
+
 import java.util.*;
 import java.io.*;
 
@@ -6,10 +8,10 @@ public class Main
     public static void main(String[] args) throws IOException
     {
         //N개의 카드 덱 사이즈를 읽어서 PriorityQueue에 넣는다 (오름차순 정렬)
-        PriorityQueue<Long> pq = readSizeOfDecks();
+        PriorityQueue<Integer> pq = readSizeOfDecks();
 
-        long compareCnt = 0; //총 비교 횟수
-        long deck1, deck2;
+        int compareCnt = 0; //총 비교 횟수
+        int deck1, deck2;
 
         //PQ에 덱이 하나 남을 때 까지 반복한다
         while (pq.size() > 1)
@@ -29,7 +31,7 @@ public class Main
         System.out.println(compareCnt);
     }
 
-    static PriorityQueue<Long> readSizeOfDecks() throws IOException
+    static PriorityQueue<Integer> readSizeOfDecks() throws IOException
     {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
@@ -38,11 +40,11 @@ public class Main
         numOfDecks = Integer.parseInt(br.readLine());
 
         //반환할 PriorityQueue
-        PriorityQueue<Long> pq = new PriorityQueue<>(numOfDecks);
+        PriorityQueue<Integer> pq = new PriorityQueue<>(numOfDecks);
 
         //덱의 크기를 입력받아서 PQ에 넣는다. 오름차순 정렬된다.
         for (int i = 0; i < numOfDecks; i++)
-            pq.add(Long.parseLong(br.readLine()));
+            pq.add(Integer.parseInt(br.readLine()));
 
         return pq;
     }
