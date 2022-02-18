@@ -37,6 +37,8 @@ public class Main
         cnt = 0;
         sum = primeNumbers.get(0);
 
+        //사실상 leftIdx > rightIdx가 되는 경우는 while문 안에 있는 break 문 때문에
+        //발생하지 않는다.
         while (leftIdx <= rightIdx)
         {
             if (sum == N)
