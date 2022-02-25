@@ -5,6 +5,7 @@
 *.iml
 
 #ignore project config directory
+.idea/
 */.idea/
 
 #ignore .DS_Store
