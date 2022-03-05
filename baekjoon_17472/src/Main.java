@@ -8,7 +8,6 @@ public class Main
     static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
     static int rows, cols;
     static int[][] map;
-    static int[][] dirs =
 
     public static void main(String[] args) throws IOException
     {
@@ -17,15 +16,16 @@ public class Main
         map = new int[rows][cols];
         readMap();
 
+        ArrayList<Island> islands = findAllIslands();
+
         for (int[] row : map)
             System.out.println(Arrays.toString(row));
-
-        ArrayList<Island> islands = new ArrayList<>();
-        findAllIslands(islands);
     }
 
-    static void findAllIslands(ArrayList<Island> islands)
+    static ArrayList<Island> findAllIslands()
     {
+        ArrayList<Island> islands = new ArrayList<>();
+
         boolean[][] visit = new boolean[rows][cols];
         int mapId = 1;
 
@@ -35,67 +35,55 @@ public class Main
             {
                 if (map[row][col] == 0 && !visit[row][col]) //바다 = -1, 땅 = 0
                 {
-                    ArrayList<Land> lands = findBorderlandsOfIsland(row, col, mapId++, visit);
+                    ArrayList<Land> lands = findLandsOfIsland(row, col, mapId++, visit);
                     islands.add(new Island(lands));
                 }
             }
         }
+
+        return islands;
     }
 
-    static ArrayList<Land> findBorderlandsOfIsland(int startRow, int startCol, int mapId, boolean[][] visit)
+    static ArrayList<Land> findLandsOfIsland(int startRow, int startCol, int mapId, boolean[][] visit)
     {
-        ArrayList<Land> borderlands = new ArrayList<>();
+        ArrayList<Land> lands = new ArrayList<>();
         int[][] dirs = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
 
         Queue<Land> bfsQ = new LinkedList<>();
         bfsQ.add(new Land(startRow, startCol));
-        Land land;
+        visit[startRow][startCol] = true;
 
-        int newRow, newCol;
+        Land land;
+        int targetRow, targetCol;
 
         while (!bfsQ.isEmpty())
         {
             land = bfsQ.poll();
-
             map[land.row][land.col] = mapId;
-            visit[land.row][land.col] = true;
-
-            if (isBorderland(land.row, land.col, dirs))
-                borderlands.add(land);
+            lands.add(land);
 
             for (int[] dir : dirs)
             {
-                newRow = land.row + dir[0];
-                newCol = land.col + dir[1];
+                targetRow = land.row + dir[0];
+                targetCol = land.col + dir[1];
 
-                if (!isInMap(newRow, newCol) || map[newRow][newCol] != 0)
+                if (!isLand(targetRow, targetCol))
                     continue;
 
-                bfsQ.add(new Land(newRow, newCol));
+                if (visit[targetRow][targetCol])
+                    continue;
+
+                visit[targetRow][targetCol] = true;
+                bfsQ.add(new Land(targetRow, targetCol));
             }
         }
 
-        return borderlands;
+        return lands;
     }
 
-    static boolean isBorderland(int row, int col, int[][] dirs)
+    static boolean isLand(int row, int col)
     {
-        int newRow, newCol;
-        for (int[] dir : dirs)
-        {
-            newRow = row + dir[0];
-            newCol = col + dir[1];
-
-            if (isInMap(newRow, newCol) || map[newRow][newCol] == -1)
-                return true;
-        }
-
-        return false;
-    }
-
-    static boolean isInMap(int row, int col)
-    {
-        return (row >= 0 && row < rows && col >= 0 && col < cols);
+        return (row >= 0 && row < rows && col >= 0 && col < cols && map[row][col] == 0);
     }
 
     static void readMap() throws IOException
