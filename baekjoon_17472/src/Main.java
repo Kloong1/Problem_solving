@@ -83,8 +83,7 @@ public class Main
                 if (map[row][col] == -1)
                 {
                     seaFlag = true;
-                    if (lastIsland != -1)
-                        bridgeLength++;
+                    bridgeLength++;
                 }
                 else
                 {
@@ -121,12 +120,11 @@ public class Main
                 if (map[row][col] == -1)
                 {
                     seaFlag = true;
-                    if (lastIsland != -1)
-                        bridgeLength++;
+                    bridgeLength++;
                 }
                 else
                 {
-                    if (seaFlag && lastIsland != -1)
+                    if (seaFlag && lastIsland != -1 && bridgeLength >= 2)
                     {
                         minBridgeLength[lastIsland][map[row][col]] =
                                 Math.min(minBridgeLength[lastIsland][map[row][col]], bridgeLength);
