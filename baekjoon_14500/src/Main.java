@@ -1,9 +1,5 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.StringTokenizer;
+import java.io.*;
+import java.util.*;
 
 public class Main
 {
@@ -23,13 +19,6 @@ public class Main
         Map[] maps = new Map[4];
         getRotatedMaps(maps, new Map(originalMap, rows, cols));
 
-        for (Map map : maps)
-        {
-            for (int[] row : map.map)
-                System.out.println(Arrays.toString(row));
-            System.out.println();
-        }
-
         Tetromino[] tetrominos = new Tetromino[7];
         initTetrominos(tetrominos);
 
@@ -40,7 +29,40 @@ public class Main
     {
         int maxSum = 0;
 
+        for (Map map : maps)
+            maxSum = Math.max(maxSum, getMaxSumOfMap(map, tetrominos));
+
         return maxSum;
+    }
+
+    static int getMaxSumOfMap(Map map, Tetromino[] tetrominos)
+    {
+        int maxSum = 0;
+
+        int maxRow, maxCol;
+        for (Tetromino tetromino : tetrominos)
+        {
+            maxRow = map.rows - tetromino.height;
+            maxCol = map.cols - tetromino.width;
+
+            for (int row = 0; row <= maxRow; row++)
+            {
+                for (int col = 0; col <= maxCol; col++)
+                    maxSum = Math.max(maxSum, getSumOfTetromino(map.map, tetromino.points, col, row));
+            }
+        }
+
+        return maxSum;
+    }
+
+    static int getSumOfTetromino(int[][] map, Point[] points, int startX, int startY)
+    {
+        int sum = 0;
+
+        for (Point p : points)
+            sum += map[startY + p.y][startX + p.x];
+
+        return sum;
     }
 
     static void getRotatedMaps(Map[] maps, Map originalMap)
