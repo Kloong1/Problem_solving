@@ -1,8 +1,4 @@
-import java.io.BufferedReader;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.Queue;
-import java.util.Scanner;
+import java.util.*;
 
 public class Main
 {
@@ -10,56 +6,65 @@ public class Main
     {
         int numOfEmoticons = readNumOfEmoticons();
 
-        int sizeOfMinArr = Math.min(numOfEmoticons * 2 + 1, 1100);
-
-        int[][] minArr = new int[sizeOfMinArr][sizeOfMinArr];
-        setMinArr(minArr, sizeOfMinArr);
-
-        System.out.println(getMin(minArr[numOfEmoticons]));
+        System.out.println(getMinTime(numOfEmoticons));
     }
 
-    static int getMin(int[] arr)
+    static int getMinTime(int numOfEmoticons)
     {
-        return 0;
-    }
+        int sizeOfVisitArr = Math.min(numOfEmoticons * 2 + 1, 1100);
 
-    static void setMinArr(int[][] minArr, int sizeOfMinArr)
-    {
-        initMinArr(minArr);
+        boolean[][] visit = new boolean[sizeOfVisitArr][sizeOfVisitArr];
 
         Queue<Status> statusQueue = new LinkedList<>();
         statusQueue.add(new Status(1, 0, 0));
-        minArr[1][0] = 0;
+        visit[1][0] = true;
 
         Status stat;
         while (!statusQueue.isEmpty())
         {
             stat = statusQueue.poll();
 
-            if (minArr[stat.screenCnt][stat.clipboardCnt] <= stat.sec)
-                continue;
+            if (stat.screenCnt == numOfEmoticons)
+                return stat.sec;
 
-            minArr[stat.screenCnt][stat.clipboardCnt] = stat.sec;
+            copyScreenAndEnqueue(stat, statusQueue, visit);
 
-            int sec = stat.sec;
-            for (int screenCnt = stat.screenCnt; screenCnt < sizeOfMinArr; screenCnt += stat.clipboardCnt)
-            {
-                if (sec < minArr[screenCnt][stat.clipboardCnt])
-                {
-                    minArr[screenCnt][stat.clipboardCnt] = sec;
-                    statusQueue.add(new Status(screenCnt, stat.clipboardCnt, sec));
-                }
-                sec++;
-            }
+            if (stat.screenCnt > 0)
+                deleteEmoticonAndEnqueue(stat, statusQueue, visit);
 
-            sec =
+            if (stat.screenCnt + stat.clipboardCnt < sizeOfVisitArr)
+                pasteClipboardAndEnqueue(stat, statusQueue, visit);
+        }
+
+        //정상 입력이 아닌 경우
+        return -1;
+    }
+
+    static void pasteClipboardAndEnqueue(Status stat, Queue<Status> statusQueue, boolean[][] visit)
+    {
+        if (!visit[stat.screenCnt + stat.clipboardCnt][stat.clipboardCnt])
+        {
+            visit[stat.screenCnt + stat.clipboardCnt][stat.clipboardCnt] = true;
+            statusQueue.add(new Status(stat.screenCnt + stat.clipboardCnt, stat.clipboardCnt, stat.sec + 1));
         }
     }
 
-    static void initMinArr(int[][] minArr)
+    static void deleteEmoticonAndEnqueue(Status stat, Queue<Status> statusQueue, boolean[][] visit)
     {
-        for (int[] row : minArr)
-            Arrays.fill(row, Integer.MIN_VALUE);
+        if (!visit[stat.screenCnt - 1][stat.clipboardCnt])
+        {
+            visit[stat.screenCnt - 1][stat.clipboardCnt] = true;
+            statusQueue.add(new Status(stat.screenCnt - 1, stat.clipboardCnt, stat.sec + 1));
+        }
+    }
+
+    static void copyScreenAndEnqueue(Status stat, Queue<Status> statusQueue, boolean[][] visit)
+    {
+        if (!visit[stat.screenCnt][stat.screenCnt])
+        {
+            visit[stat.screenCnt][stat.screenCnt] = true;
+            statusQueue.add(new Status(stat.screenCnt, stat.screenCnt, stat.sec + 1));
+        }
     }
 
     static int readNumOfEmoticons()
