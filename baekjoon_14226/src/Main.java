@@ -41,7 +41,6 @@ public class Main
 
             minArr[stat.screenCnt][stat.clipboardCnt] = stat.sec;
 
-            pasteAndUpdateArr(stat, minArr, )
             int sec = stat.sec;
             for (int screenCnt = stat.screenCnt; screenCnt < sizeOfMinArr; screenCnt += stat.clipboardCnt)
             {
