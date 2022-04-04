@@ -1,7 +1,5 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.StringTokenizer;
+import java.io.*;
+import java.util.*;
 
 public class Main {
 
@@ -16,19 +14,6 @@ public class Main {
 
         Fish shark = new Fish();
         int sumOfFishNum = makeSharkEatFirstFish(map, shark);
-
-//        for (Fish[] row : map)
-//        {
-//            for (Fish f : row)
-//            {
-//                if (f == null)
-//                    System.out.print("n ");
-//                else
-//                    System.out.print(f.num + " ");
-//            }
-//            System.out.println();
-//        }
-//        System.out.println();
 
         System.out.println(getMaxSumOfFishNum(fishes, map, shark, sumOfFishNum));
     }
