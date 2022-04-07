@@ -1,36 +1,21 @@
 class Solution {
-    public long solution(int w, int h) {
+    public long solution(int width, int height) {
         
-        if (w == 1 || h == 1)
+        if (width == 1 || height == 1)
             return 0;
-        
-        long originSquareCnt = (long)w * (long)h;
         
         int gcd;
         
-        if (w > h)
-            gcd = getGcd(w, h);
+        if (width > height)
+            gcd = getGcd(width, height);
         else
-            gcd = getGcd(h, w);
+            gcd = getGcd(height, width);
         
-        return originSquareCnt - (getCutSquareCnt(w / gcd, h / gcd) * gcd);
-    }
-    
-    private long getCutSquareCnt(int w, int h) {
+        long squareCnt = (long)width * (long)height;
+        long subWidth = width / gcd;
+        long subHeight = height / gcd;
         
-        long cnt = 0;
-        double inclination = (double)h / w;
-        double preY, curY;
-        
-        preY = 0;
-        for (int x = 1; x <= w; x++)
-        {
-            curY = preY + inclination;
-            cnt += (int)curY - (int)preY + 1;
-            preY = curY;
-        }
-        
-       return cnt - 1;
+        return squareCnt - (subWidth + subHeight - 1) * gcd;
     }
     
     private int getGcd(int a, int b) {
@@ -41,4 +26,4 @@ class Solution {
             return getGcd(b, a%b);
         }
     }
-} 
+}
